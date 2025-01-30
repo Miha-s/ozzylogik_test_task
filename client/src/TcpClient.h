@@ -15,6 +15,7 @@ private slots:
   void sendFile();
   void readResponse();
   void parseResponse(QByteArray response);
+  void handleSocketError(QAbstractSocket::SocketError socketError);
 
 signals:
   void responseReady(QByteArray response);

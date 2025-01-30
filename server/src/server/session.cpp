@@ -47,7 +47,7 @@ void Session::process() {
   WordsCounter counter(m_buffer);
 
   counter.process();
-  m_response = convert_to_json(*counter.get_result());
+  m_response = convert_to_json(counter.get_result());
   log_info(m_socket.remote_endpoint(), "User text processed");
 
   write_header();
@@ -76,7 +76,7 @@ void Session::write_response() {
       m_socket, boost::asio::buffer(m_response),
       [this, self](boost::system::error_code ec, std::size_t) {
         if (!ec) {
-          read_header();
+          start();
         } else {
           log_error(m_socket.remote_endpoint(), ec, "Error sending JSON data");
         }

@@ -88,8 +88,8 @@ void WordsCounter::process() {
 
   const auto &longest_sequence = sequence_counter.get_longest_words_sequence();
 
-  m_result = std::shared_ptr<Result>(
-      new Result{words_count, unique_strings.size(), longest_sequence.size()});
+  m_result =
+      Result{words_count, unique_strings.size(), longest_sequence.size()};
 }
 
-WordsCounter::ResultPtr WordsCounter::get_result() { return m_result; }
+const WordsCounter::Result &WordsCounter::get_result() { return m_result; }

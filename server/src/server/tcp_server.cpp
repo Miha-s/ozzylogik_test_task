@@ -1,7 +1,5 @@
 #include "tcp_server.hpp"
 
-#include <iostream>
-
 #include "logging/utils.hpp"
 #include "session.hpp"
 

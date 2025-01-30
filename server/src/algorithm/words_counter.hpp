@@ -1,7 +1,6 @@
 #ifndef WORDS_COUNTER_HPP
 #define WORDS_COUNTER_HPP
 #include <string>
-#include <memory>
 
 class WordsCounter {
 public:
@@ -11,16 +10,15 @@ public:
         size_t longest_unique_words_sequence_count;
     };
 
-    using ResultPtr = std::shared_ptr<Result>;
-
     WordsCounter(const std::string &text);
 
     void process();
 
-    ResultPtr get_result();
-private:
+    const Result &get_result();
+
+  private:
     std::string_view m_text;
-    ResultPtr m_result;
+    Result m_result;
 };
 
 #endif

@@ -11,6 +11,7 @@ TcpClient::TcpClient(const QString &host, quint16 port, const QString &filePath,
   m_socket->setParent(this);
 
   connect(m_socket, &QTcpSocket::connected, this, &TcpClient::sendFile);
+  connect(m_socket, &QTcpSocket::errorOccurred, this, &TcpClient::handleSocketError);
   connect(m_socket, &QTcpSocket::readyRead, this, &TcpClient::readResponse);
   connect(this, &TcpClient::responseReady, this, &TcpClient::parseResponse);
 }
@@ -68,7 +69,6 @@ void TcpClient::parseResponse(QByteArray response) {
   if (!jsonResponse.isObject()) {
     qDebug() << "Invalid JSON format! Expected a JSON object.";
     finish(1);
-
     return;
   }
 
@@ -94,7 +94,13 @@ void TcpClient::parseResponse(QByteArray response) {
   finish();
 }
 
+void TcpClient::handleSocketError(QAbstractSocket::SocketError socketError) {
+  qDebug() << "Socket Error:" << m_socket->errorString();
+  finish(1);
+}
+
 void TcpClient::finish(int code) {
-  m_socket->close();
+  if (m_socket->isOpen())
+    m_socket->close();
   emit sessionFinished(code);
 }

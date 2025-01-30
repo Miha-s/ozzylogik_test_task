@@ -9,7 +9,7 @@ std::ostream &operator<<(std::ostream &os,
 
 void log_error(const boost::asio::ip::tcp::endpoint &endpoint,
                const boost::system::error_code ec, const std::string &info) {
-  std::cout << endpoint << " - " << (info.empty() ? "" : info + ": ")
+  std::cerr << endpoint << " - " << (info.empty() ? "" : info + ": ")
             << ec.to_string() << std::endl;
 }
 
