@@ -51,14 +51,21 @@ void TcpClient::readResponse() {
     sizeStream.setByteOrder(QDataStream::BigEndian);
     sizeStream >> m_response_size;
     m_reading_header = false;
+    m_response.clear();
+    m_response.reserve(m_response_size);
   }
 
-  QByteArray response = m_socket->read(m_socket->bytesAvailable());
-  if (response.size() != m_response_size) {
-    // not finished reading file
+  qint64 bytes_to_read = m_response_size - m_response.size();
+  qint64 available_bytes = m_socket->bytesAvailable();
+
+  if (available_bytes < bytes_to_read) {
+    m_response.append(m_socket->read(available_bytes));
     return;
   }
-  emit responseReady(response);
+
+  m_response.append(m_socket->read(bytes_to_read));
+
+  emit responseReady(m_response);
 
   m_reading_header = true;
 }

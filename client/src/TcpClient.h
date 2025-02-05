@@ -27,6 +27,7 @@ private:
 private:
   bool m_reading_header = true;
   quint32 m_response_size;
+  QByteArray m_response;
 
   QTcpSocket *m_socket;
   QString m_file_path;
